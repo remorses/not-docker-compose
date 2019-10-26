@@ -68,7 +68,7 @@ async def async_up(service=None, f=None):
     # - run the images commands concurrently with their env_file and environment, grab the logs, color them, add the name prefix, print he logs
     processes = get_processes(services)
     group = asyncio.gather(
-        exec('docker-compose up', env=os.environ, stderr=None),
+        exec('docker-compose -f - up', stdin=unchanged_conf, env=os.environ, stderr=None),
         *processes,
     )
     try:

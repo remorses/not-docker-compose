@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-    # x:
-    #     image: alpine
-    #     command: sh -c 'sleep 10 && echo ciao a tutti'
+    x:
+        image: alpine
+        command: sh -c 'sleep 10 && echo ciao a tutti'
     y:
         build: example
         command: python ciao.py

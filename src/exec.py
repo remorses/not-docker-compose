@@ -49,7 +49,6 @@ async def read_stream(stream, cb):
                 cb(line.decode())
                 await asyncio.sleep(0)
         else:
-            await asyncio.sleep(0)
             break
 
 
