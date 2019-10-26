@@ -1,5 +1,8 @@
+from .support import *
+from src.main import up
 
 
 
-def test_ready():
-    assert False
+@pytest.mark.asyncio
+async def test_main():
+    await up()
