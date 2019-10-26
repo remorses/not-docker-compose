@@ -8,7 +8,8 @@
             "name": "Python: Modulo",
             "type": "python",
             "request": "launch",
-            "module": "module"
+            "module": "src",
+            "args": ["up"]
         },
         {
             "name": "Python: Play",

@@ -1,4 +1,5 @@
 import asyncio
+from .logger import logger
 import sys
 
 async def get_stdout(cmd, cwd=None, env=None,):
@@ -13,6 +14,7 @@ async def get_stdout(cmd, cwd=None, env=None,):
     return stdout
 
 async def exec(cmd, cwd=None, env=None, stdout=sys.stdout.write, stderr=sys.stderr.write, stdin=None):
+    logger.debug(f'executing {cmd}')
     proc: asyncio.Process = await asyncio.create_subprocess_shell(
         cmd,
         env=env,
@@ -23,24 +25,31 @@ async def exec(cmd, cwd=None, env=None, stdout=sys.stdout.write, stderr=sys.stde
     )
     if stdin:
         proc.stdin.write(stdin.encode() + b'\n')
-        proc.stdin.write_eof()
+        # proc.stdin.write_eof()
         await proc.stdin.drain()
         proc.stdin.close()
-        
-
-    await asyncio.gather(
-        read_stream(proc.stdout, stdout), read_stream(proc.stderr, stderr)
-    )
+    try:
+        # o, e =await proc.communicate()
+        await asyncio.wait(
+            [read_stream(proc.stdout, stdout), read_stream(proc.stderr, stderr)]
+        )
+    except asyncio.CancelledError:
+        proc.send_signal(2)
+        return
     # stdout, stderr = await proc.communicate()
     return proc
 
 
 async def read_stream(stream, cb):
     while True:
+        await asyncio.sleep(0)
         line = await stream.readline()
         if line:
-            cb(line.decode())
+            if cb:
+                cb(line.decode())
+                await asyncio.sleep(0)
         else:
+            await asyncio.sleep(0)
             break
 
 
