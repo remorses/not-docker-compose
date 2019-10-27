@@ -1,6 +1,6 @@
 from setuptools import setup
 
-NAME = 'module'
+NAME = 'not_docker_compose'
 setup(
     name=NAME,
     # [bump]
