@@ -1,12 +1,13 @@
 version: '3'
 
 services:
-    x:
+    mongo:
+        image: mongo
+        
+    test_container:
         image: alpine
-        command: sh -c 'sleep 10 && echo ciao a tutti'
+        command: sh -c 'echo ciao a tutti && echo xxx'
+        
     y:
         build: example
         command: python ciao.py
-    z:
-        build: example
-        command: echo start && sleep 3 && python ciao.py
