@@ -15,8 +15,8 @@ async def get_stdout(cmd, cwd=None, env=None,):
 
 async def exec(cmd, cwd=None, env=None, stdout=sys.stdout.write, stderr=sys.stderr.write, stdin=None) -> asyncio.subprocess.Process:
     logger.debug(f'executing {cmd}')
-    proc: asyncio.Process = await asyncio.create_subprocess_exec(
-        *cmd.strip().split(' '),
+    proc: asyncio.Process = await asyncio.create_subprocess_shell(
+        cmd,
         env=env and dict(env),
         cwd=cwd,
         stdout=asyncio.subprocess.PIPE,

@@ -33,7 +33,7 @@ async def get_config(f=None):
 
 def get_processes(services) -> Iterable[Coroutine]:
     for name, service in services.items():
-        env: dict = {}
+        env: dict = dict(os.environ)
         if "env_file" in service:
             env_file = service["env_file"]
             if not isinstance(env_file, list):
@@ -59,7 +59,8 @@ def get_processes(services) -> Iterable[Coroutine]:
             color = random.choice(colors)
             log = lambda x: sys.stdout.write(getattr(Fore, color) + f"{name} | " + Fore.RESET + x)
             p = await exec(cmd, env=env, cwd=cwd, stdout=log, stderr=log)
-            log(f"{name} exited with code {p.returncode}" + "\n")
+            if p:
+                log(f"{name} exited with code {p.returncode}" + "\n")
 
         yield f(name, cmd, env, cwd)
 
