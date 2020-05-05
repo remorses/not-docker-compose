@@ -1,12 +1,28 @@
-# not really, this shit is super slow
+run docker-compose with some additional features
 
+```yml
+version: "3"
 
-essentially this image simulates the docker-compose commands but simply run the commands in the host machine and reads the logs.
-the images that use the image field are runned in the same way as docker-compose
+x-host-services:
+  nextjs:
+    command: cd frontend && yarn dev
 
-the supported features are:
-- entrypoint
-- command
-- env_file
-- environment
+services:
+  mocker:
+    labels:
+      - watch
+    image: mongoke/graphql-mocker
+    ports:
+      - 7090:80
+    depends_on:
+      - mongoke
+      - api
+    environment:
+      - PORT=80
+      - URL=http://gateway
+      - MOCKS_PATH=/mocks.js
+      - PRESERVE_MUTATIONS=1
+    volumes:
+      - ./frontend/src/mocks.js:/mocks.js
+```
 
