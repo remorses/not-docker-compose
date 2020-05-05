@@ -2,7 +2,7 @@ run docker-compose with some additional features
 
 features like
 - run commands on the host, via `x-host-services` field
-- restart a service when a volume changes (enable adding the label `watch`) 
+- restart a service when a volume changes (enable adding the label `watch` and the `-w` argument) 
 - deploy the services to [Google Cloud Run]() with `not-docker-compose deploy` (enable adding the label `deploy`) 
 
 ```yml
